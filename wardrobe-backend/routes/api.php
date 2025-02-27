@@ -13,7 +13,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/clothing', [ClothingController::class, 'index']);
 Route::post('/clothing', [ClothingController::class, 'store']);
 Route::delete('/clothing/{id}', [ClothingController::class, 'destroy']);
-Route::put('/clothing/{id}', [ClothingController::class, 'update']);
+Route::post('/clothing/{id}', [ClothingController::class, 'update']);
 Route::get('/clothing/{id}', [ClothingController::class, 'show']);
 
 //category

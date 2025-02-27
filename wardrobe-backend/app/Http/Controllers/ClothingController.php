@@ -22,7 +22,7 @@ class ClothingController extends Controller
         return response([
             'message' => 'Retrieved successfully',
             'clothings' => $clothings->map(function($clothing) use ($domain){
-                $clothing->image = $domain . '/' .'api/images'. '/' . $clothing->image;
+                $clothing->image = $domain . '/' .'storage/images'. '/' . $clothing->image;
                 return $clothing;
             }),
         ], 200);
@@ -36,39 +36,29 @@ class ClothingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'userId' => 'required|numeric',
+            'userId' => 'required|string',
             'name' => 'required|string',
             'type' => 'required|string',
             'description' => 'nullable|string',
             'color' => 'required|string',
             'size' => 'required|string',
-            'categoryId' => 'required|numeric',
-            'isFavorite' => 'required|in:0,1',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categoryId' => 'required|string',
+            'isFavorite' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'season' => 'required|string',
         ]);
 
         if($request->file('image') != null){
             $uuid = Str::uuid();
 
-            $imageFolderPath = Setting::where('setting_key', 'image_folder_path')->first();
-            if (!$imageFolderPath) {
-                return response([
-                    'ty' => $imageFolderPath,
-                    'message' => 'Image folder path not found in settings',
-                ], 500);
-            }
             $domain = Setting::where('setting_key', 'domain')->value('value');
 
 
             $uploadedImage = $request->file('image');
 
-
             $imageName = $uuid . '_' . $uploadedImage->getClientOriginalName();
 
-
-            $uploadedImage->move($imageFolderPath->value, $imageName);
-            $inviteCode = Str::uuid()->toString();
+            $uploadedImage->storeAs('images', $imageName, 'public');
 
             $clothing = Clothing::create([
                 'userId' => $request->userId,
@@ -76,7 +66,7 @@ class ClothingController extends Controller
                 'description' => $request->description,
                 'type' => $request->type,
                 'color' => $request->color,
-                'isFavorite' => $request->isFavorite,
+                'isFavorite' => $request->isFavorite == 'true',
                 'size' => $request->size,
                 'categoryId' => $request->categoryId,
                 'image' => $imageName,
@@ -84,7 +74,7 @@ class ClothingController extends Controller
             ]);
 
             $clothing = Clothing::findOrfail($clothing->clothingId);
-            $clothing->image = $domain . '/' .'api/images'. '/' . $imageName;
+            $clothing->image = $domain . '/' .'storage/images'. '/' . $imageName;
 
             return response([
                 'message' => 'Clothing added successfully',
@@ -99,7 +89,7 @@ class ClothingController extends Controller
                 'type' => $request->type,
                 'color' => $request->color,
                 'size' => $request->size,
-                'isFavorite' => $request->isFavorite,
+                'isFavorite' => $request->isFavorite== 'true',
                 'categoryId' => $request->categoryId,
                 'image' => null,
                 'season' => $request->season,
@@ -138,7 +128,7 @@ class ClothingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //update the specified clothing
+
         $clothing = Clothing::find($id);
         if (!$clothing) {
             return response([
@@ -152,9 +142,9 @@ class ClothingController extends Controller
             'color' => 'required|string',
             'description' => 'nullable|string',
             'size' => 'required|string',
-            'categoryId' => 'required|numeric',
-            'isFavorite' => 'required|boolean',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048|null',
+            'categoryId' => 'required|string',
+            'isFavorite' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048|string',
             'season' => 'required|string',
         ]);
 
@@ -170,20 +160,15 @@ class ClothingController extends Controller
 
         $uploadedImage = $request->file('image');
 
-        if($request->file('image') != null){
-            $uuid = Str::uuid();
+        //if image is null the type is string
 
-            $imageFolderPath = Setting::where('setting_key', 'image_folder_path')->first();
-            if (!$imageFolderPath) {
-                return response([
-                    'message' => 'Image folder path not found in settings',
-                ], 500);
-            }
+        if($request->file('image') != null ){
+            $uuid = Str::uuid();
 
 
             $imageName = $uuid . '_' . $uploadedImage->getClientOriginalName();
 
-            $uploadedImage->move($imageFolderPath->value, $imageName);
+            $uploadedImage->storeAs('images', $imageName, 'public');
 
             $clothing->image = $imageName;
 
@@ -193,7 +178,7 @@ class ClothingController extends Controller
                 'color' => $request->color,
                 'description' => $request->description,
                 'size' => $request->size,
-                'isFavorite' => $request->isFavorite,
+                'isFavorite' => $request->isFavorite== 'true',
                 'categoryId' => $request->categoryId,
                 'season' => $request->season,
                 'image' => $imageName,
@@ -211,13 +196,13 @@ class ClothingController extends Controller
         $clothing->description = $request->description;
         $clothing->size = $request->size;
         $clothing->categoryId = $request->categoryId;
-        $clothing->isFavorite = $request->isFavorite;
+        $clothing->isFavorite = $request->isFavorite== 'true';
         $clothing->season = $request->season;
         $clothing->save();
 
 
         $clothing = Clothing::findOrfail($clothing->clothingId);
-        $clothing->image = $domain . '/' .'api/images'. '/' .$clothing->imageName;
+        $clothing->image = $domain . '/' .'storage/images'. '/' .$clothing->imageName;
 
         return response([
             'message' => 'Clothing updated successfully',
