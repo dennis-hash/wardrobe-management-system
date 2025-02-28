@@ -2,6 +2,11 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import {useAuthStore} from "@/store/auth.ts";
+import {useWardrobeStore} from "@/store/wardrobeStore.ts";
+import {storeToRefs} from "pinia";
+
+const itemStore = useWardrobeStore();
+const { categories } = storeToRefs(itemStore);
 
 const auth = useAuthStore();
 
@@ -14,19 +19,6 @@ const navigateTo = (path: string) => {
 
 const isLeftSideBarCollapsed = ref(true);
 
-const collapseSideMenu = () => {
-  isLeftSideBarCollapsed.value = !isLeftSideBarCollapsed.value;
-};
-
-const menuItems = ref([
-  { text: "New Arrivals", link: "/" },
-  { text: "Men's Catalog", link: "/" },
-  { text: "Women's Catalog", link: "/" },
-  { text: "Apparel", link: "/" },
-  { text: "Accessories", link: "/" },
-  { text: "Sale", link: "/" },
-  { text: "Brands", link: "/" }
-]);
 </script>
 
 <template>
@@ -95,8 +87,8 @@ const menuItems = ref([
   <div class="hidden lg:flex items-center justify-between py-2 bg-slate-200">
     <nav class="flex-1">
       <ul class="flex justify-center space-x-6 text-sm">
-        <li v-for="item in menuItems" :key="item.text">
-          <a :href="item.link" class="hover:text-gray-600 px-3">{{ item.text }}</a>
+        <li v-for="item in categories" :key="item.categoryId">
+          <a :href="item.name" class="hover:text-gray-600 px-3">{{ item.name }}</a>
         </li>
       </ul>
     </nav>
