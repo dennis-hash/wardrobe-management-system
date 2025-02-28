@@ -4,10 +4,14 @@ import {reactive} from "vue";
 import {AxiosError} from "axios";
 import type {RegisterForm} from "@/types";
 import {useAuthStore} from "@/store/auth.ts";
+import { useRouter } from 'vue-router';
 
-
+const router = useRouter();
 const auth = useAuthStore();
 
+const navigateTo = (path: string) => {
+  router.push(path);
+};
 
 const form = reactive<RegisterForm>({
   name: "",
@@ -110,7 +114,7 @@ const form = reactive<RegisterForm>({
             Sign Up
           </button>
           <p class="text-sm text-gray-600 text-center mt-4">
-            Already have an account? <a href="/login" class="text-blue-600 hover:underline">Login</a>
+            Already have an account? <a @click="navigateTo('/login')" class="text-blue-600 hover:underline">Login</a>
           </p>
         </form>
       </div>

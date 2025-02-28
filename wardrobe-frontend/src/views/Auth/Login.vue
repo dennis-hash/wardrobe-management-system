@@ -3,7 +3,9 @@ import axiosInstance from "@/lib/axios.ts";
 import {reactive} from "vue";
 import {useAuthStore} from "@/store/auth.ts";
 import type {loginForm} from "@/types";
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const auth = useAuthStore();
 
 const form = reactive<loginForm>({
@@ -11,7 +13,9 @@ const form = reactive<loginForm>({
   password: "",
 });
 
-
+const navigateTo = (path: string) => {
+  router.push(path);
+};
 
 
 </script>
@@ -75,7 +79,7 @@ const form = reactive<loginForm>({
             Login
           </button>
           <p class="text-sm text-gray-600 text-center mt-4">
-            Don't have an account? <a href="/register" class="text-blue-600 hover:underline">Sign up</a>
+            Don't have an account? <a @click="navigateTo('/register')" class="text-blue-600 hover:underline">Sign up</a>
           </p>
         </form>
       </div>
