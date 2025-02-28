@@ -3,8 +3,8 @@ import {useAuthStore} from "@/store/auth.ts";
 import router from "@/router";
 
 const axiosInstance = axios.create({
-  baseURL: "https://wardrobe-management-system.onrender.com/api",
-  //baseURL: "http://localhost:8000/api",
+  //baseURL: "https://wardrobe-management-system.onrender.com/api",
+  baseURL: "http://localhost:8000/api",
   withCredentials: true,
   withXSRFToken: true,
   xsrfCookieName: "XSRF-TOKEN",
