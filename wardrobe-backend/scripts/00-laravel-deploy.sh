@@ -26,7 +26,7 @@ composer dump-autoload
 
 #refresh database
 echo "Refreshing database..."
-php artisan migrate:refresh --force
+php artisan migrate:fresh --force
 
 echo "Running migrations..."
 php artisan migrate --force
