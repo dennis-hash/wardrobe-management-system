@@ -6,6 +6,11 @@ composer install --no-dev --working-dir=/var/www/html
 echo "generating application key..."
 #php artisan key:generate --show
 
+php artisan cache:clear
+php artisan config:clear
+php artisan config:cache
+php artisan route:clear
+
 echo "Caching config..."
 php artisan config:cache
 
