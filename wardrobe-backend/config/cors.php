@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://wardrobe-management-system-sigma.vercel.app', 'http://localhost:3000'],
 
     'allowed_origins_patterns' => [],
 
