@@ -26,13 +26,13 @@ composer dump-autoload
 
 #refresh database
 echo "Refreshing database..."
-php artisan migrate:fresh --force
+#php artisan migrate:fresh --force
 
 echo "Running migrations..."
-php artisan migrate --force
+#php artisan migrate --force
 
 #run seeders
 echo "Running seeders..."
-php artisan db:seed --force
+#php artisan db:seed --force
 
 systemctl restart nginx
