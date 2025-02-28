@@ -22,4 +22,4 @@ echo "Running migrations..."
 
 #run seeders
 echo "Running seeders..."
-#php artisan db:seed --force
+php artisan db:seed --force

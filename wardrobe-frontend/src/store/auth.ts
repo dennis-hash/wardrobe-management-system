@@ -15,7 +15,7 @@ export const useAuthStore = defineStore("auth", ()=>{
 
   });
   const register = async (payload: RegisterForm) => {
-    await axiosInstance.get("/sanctum/csrf-cookie", {baseURL: 'http://localhost:8000'});
+    await axiosInstance.get("/sanctum/csrf-cookie", {baseURL: 'https://wardrobe-management-system.onrender.com'});
 
 
     errors.name = [];
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("auth", ()=>{
   });
 
   const login = async (payload: loginForm) => {
-    await axiosInstance.get("/sanctum/csrf-cookie", {baseURL: 'http://localhost:8000'});
+    await axiosInstance.get("/sanctum/csrf-cookie", {baseURL: 'https://wardrobe-management-system.onrender.com'});
 
     errorsLogin.email = [];
     errorsLogin.password = [];
