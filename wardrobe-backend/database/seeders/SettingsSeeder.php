@@ -15,7 +15,7 @@ class SettingsSeeder extends Seeder
     {
         DB::table('settings')->insert([
             'setting_key' => 'domain',
-            'value' => 'https://render.com',
+            'value' => 'https://wardrobe-management-system.onrender.com',
         ]);
     }
 }
