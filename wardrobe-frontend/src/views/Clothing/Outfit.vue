@@ -2,7 +2,12 @@
 import { useWardrobeStore } from "@/store/wardrobeStore";
 import { storeToRefs } from "pinia";
 import {onMounted, ref} from "vue";
+import { useRouter } from 'vue-router';
+import { useItemStore } from "@/store/update";
 
+
+const updateStore = useItemStore();
+const router = useRouter();
 const itemStore = useWardrobeStore();
 const { form, errors, categories } = storeToRefs(itemStore);
 const showModal = ref(false);
@@ -19,14 +24,16 @@ const getCategoryName = (categoryId: number) => {
   return category ? category.name : "Unknown";
 };
 
+const navigateTo = (path: string) => {
+  router.push(path);
+};
 const editItem = (item: any) => {
-  console.log("Edit item", item);
-  // Implement edit logic
+  updateStore.setSelectedItem(item);
+  router.push({ name: "edit" });
 };
 
 const deleteItem = (clothingId: number) => {
-  console.log("Delete item with ID:", clothingId);
-  // Implement delete logic
+  itemStore.deleteItem(clothingId);
 };
 
 onMounted(() => {
@@ -37,11 +44,13 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto p-6">
+
+
     <div class="flex justify-between items-center mb-4">
       <h1 class="text-2xl font-bold mb-4 text-gray-800">Wardrobe Items</h1>
       <button
-        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5"
-        @click="showModal = true">
+        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        @click="navigateTo('/add')">
         + Add Clothing Item
       </button>
     </div>

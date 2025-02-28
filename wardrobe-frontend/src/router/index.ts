@@ -6,6 +6,9 @@ import Dashboard from "@/views/Auth/Dashboard.vue";
 import Landing from "@/views/Landing/Welcome.vue";
 import {useAuthStore} from "@/store/auth.ts";
 import AddItem from "@/views/Clothing/AddItem.vue";
+import Category from "@/views/Clothing/Category.vue";
+import Outfit from "@/views/Clothing/Outfit.vue";
+import EditItem from "@/views/Clothing/EditItem.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,9 +37,27 @@ const router = createRouter({
       meta: {requiresAuth: true},
     },
     {
+      path: '/outfits',
+      name: 'outfits',
+      component: Outfit,
+      meta: {requiresAuth: true},
+    },
+    {
       path: '/add',
       name: 'add',
       component: AddItem,
+      meta: {requiresAuth: true},
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: Category,
+      meta: {requiresAuth: true},
+    },
+    {
+      path: '/edit',
+      name: 'edit',
+      component: EditItem,
       meta: {requiresAuth: true},
     },
 

@@ -24,7 +24,7 @@ export const useAuthStore = defineStore("auth", ()=>{
     console.log(payload)
     try {
       await axiosInstance.post('/register', payload);
-       await getUser();
+      await getUser();
       await router.push('/dashboard');
     }catch (error){
       if( error instanceof AxiosError && error.response?.status === 422){
@@ -49,11 +49,13 @@ export const useAuthStore = defineStore("auth", ()=>{
     errorsLogin.password = [];
 
     try {
-      console.log("Login success:",payload);
-      await axiosInstance.post('/login', payload);
+      //console.log("Login success:",payload);
+      const response = await axiosInstance.post('/login', payload);
+      console.log("Login response:", response.status);
       await getUser();
       await router.push('/dashboard');
     }catch (error){
+      console.log("Login error:", error);
       if( error instanceof AxiosError && error.response?.status === 422){
         errorsLogin.email = error.response.data.errors.email;
         errorsLogin.password = error.response.data.errors.password;
@@ -64,12 +66,10 @@ export const useAuthStore = defineStore("auth", ()=>{
 
     const getUser = async () => {
       try {
-
         const response = await axiosInstance.get('/user');
-
-       // console.log("User response:", response.data.message);
-        user.value = response.data;
-        isLoggedIn.value = true;
+       console.log("User response:", response.status);
+       user.value = response.data;
+       isLoggedIn.value = true;
 
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -79,6 +79,7 @@ export const useAuthStore = defineStore("auth", ()=>{
 
   const logout = async () => {
     try {
+      console.log("loggin out..")
       await axiosInstance.post('/logout');
       user.value = null;
       isLoggedIn.value = false;

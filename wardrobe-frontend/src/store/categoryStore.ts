@@ -27,7 +27,7 @@ export const useCategoryStore = defineStore("category", () => {
   const addCategory = async (name: string) => {
     try {
       await axiosInstance.post("/category", { name });
-      await fetchCategories(); // Refresh list after adding
+      await fetchCategories();
     } catch (error) {
       console.error("Error adding category:", error);
     }

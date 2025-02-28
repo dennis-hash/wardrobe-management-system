@@ -21,26 +21,26 @@ const axiosInstance = axios.create({
 
 export default axiosInstance;
 
-axiosInstance.interceptors.response.use(
-  response => response,
-  async error => {
-    const auth = useAuthStore();
-    switch (error.response?.status) {
-      case 401:
-        router.push('/login');
-        break;
-
-        case 419:
-          await router.push('/login');
-          break;
-
-          case 422:
-            if (error.response.data.message === 'Unauthenticated.') {
-              auth.logout();
-              router.push('/login');
-            }
-            break;
-    }
-
-  },
-);
+// axiosInstance.interceptors.response.use(
+//   response => response,
+//   async error => {
+//     const auth = useAuthStore();
+//     switch (error.response?.status) {
+//       case 401:
+//         router.push('/login');
+//         break;
+//
+//         case 419:
+//           await router.push('/login');
+//           break;
+//
+//           case 422:
+//             if (error.response.data.message === 'Unauthenticated.') {
+//               auth.logout();
+//               router.push('/login');
+//             }
+//             break;
+//     }
+//
+//   },
+// );
