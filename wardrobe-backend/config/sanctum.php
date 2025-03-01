@@ -18,7 +18,7 @@ return [
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS',
         sprintf(
         '%s%s',
-        'wardrobe-management-system-sigma.vercel.app',
+        'wardrobe-management-system-1.onrender.com',
         Sanctum::currentApplicationUrlWithPort(),
     )
     )),
