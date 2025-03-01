@@ -111,7 +111,10 @@ const form = reactive<RegisterForm>({
             type="submit"
             class="w-full text-white mt-3 bg-gradient-to-r from-purple-500 to-indigo-500  font-medium rounded-lg px-2 py-3 focus:outline-none "
           >
-            Sign Up
+            <span v-if="auth.loadingReg">
+                Loading ...
+            </span>
+            <span v-else>Sign up</span>
           </button>
           <p class="text-sm text-gray-600 text-center mt-4">
             Already have an account? <a @click="navigateTo('/login')" class="text-blue-600 hover:underline">Login</a>

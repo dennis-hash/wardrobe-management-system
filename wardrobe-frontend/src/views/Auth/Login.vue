@@ -76,7 +76,12 @@ const navigateTo = (path: string) => {
             type="submit"
             class="w-full text-white mt-3 bg-gradient-to-r from-purple-500 to-indigo-500  font-medium rounded-lg px-2 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
-            Login
+
+            <span v-if="auth.loadingLogin">
+              Loading ...
+            </span>
+            <span v-else>Login</span>
+
           </button>
           <p class="text-sm text-gray-600 text-center mt-4">
             Don't have an account? <a @click="navigateTo('/register')" class="text-blue-600 hover:underline">Sign up</a>

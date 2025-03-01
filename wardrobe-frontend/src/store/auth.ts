@@ -7,6 +7,8 @@ import {AxiosError} from "axios";
 export const useAuthStore = defineStore("auth", ()=>{
     const user = ref<User | null>(null);
     const isLoggedIn = ref<boolean>(false);
+    const loadingLogin = ref(false);
+    const loadingReg = ref(false);
 
   const errors = reactive({
     name: [],
@@ -23,6 +25,7 @@ export const useAuthStore = defineStore("auth", ()=>{
     errors.password = [];
     console.log(payload)
     try {
+      loadingReg.value = true;
       await axiosInstance.post('/register', payload);
       await getUser();
       await router.push('/dashboard');
@@ -32,6 +35,8 @@ export const useAuthStore = defineStore("auth", ()=>{
         errors.email = error.response.data.errors.email;
         errors.password = error.response.data.errors.password;
       }
+    }finally {
+      loadingReg.value = false;
     }
   };
 
@@ -50,6 +55,7 @@ export const useAuthStore = defineStore("auth", ()=>{
 
     try {
       //console.log("Login success:",payload);
+      loadingLogin.value = true;
       const response = await axiosInstance.post('/login', payload);
       console.log("Login response:", response.status);
       await getUser();
@@ -61,6 +67,8 @@ export const useAuthStore = defineStore("auth", ()=>{
         errorsLogin.password = error.response.data.errors.password;
 
       }
+    }finally {
+      loadingLogin.value = false;
     }
   };
 
@@ -89,6 +97,8 @@ export const useAuthStore = defineStore("auth", ()=>{
   };
 
   return{
+    loadingLogin,
+    loadingReg,
     user,
     isLoggedIn,
     errors,
